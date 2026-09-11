@@ -68,23 +68,10 @@
             "label": {
               "type": "string"
             },
-            "type": {
-              "type": "string",
-              "default": "outlet",
-              "oneOf": [
-                {
-                  "title": "Outlet",
-                  "enum": [
-                    "outlet"
-                  ]
-                },
-                {
-                  "title": "Garage Door",
-                  "enum": [
-                    "garageDoor"
-                  ]
-                }
-              ]
+            "garageDoor": {
+              "type": "boolean",
+              "default": false,
+              "description": "Expose this output as a HomeKit Garage Door"
             }
           }
         }
@@ -183,9 +170,9 @@
                 "placeholder": "Label"
               },
               {
-                "key": "outputs[].type",
+                "key": "outputs[].garageDoor",
                 "flex": "2 2 120px",
-                "notitle": true
+                "title": "Garage Door"
               }
             ]
           }

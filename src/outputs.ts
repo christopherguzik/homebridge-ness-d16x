@@ -4,7 +4,7 @@ import { CharacteristicSetCallback, CharacteristicValue, HAP, Logger, PlatformAc
 import { NessClient } from "nessclient";
 import { AuxiliaryOutputsUpdate, OutputsUpdate } from 'nessclient/build/event'
 import { AuxiliaryOutputType, OutputType } from 'nessclient/build/event-types'
-import { NessD16x, OutputAccessoryType, OutputConfig } from './index'
+import { NessD16x, OutputConfig } from './index'
 
 const NO_ERRORS = null
 const NAUXOUTPUTS = 8
@@ -50,7 +50,7 @@ export class NessOutputsHelper {
 		// configure output services
 		for (const output of this.outputs) {
 			if (1 <= output.id && output.id <= NOUTPUTS) {
-				const isGarageDoor = output.type === OutputAccessoryType.GARAGE_DOOR
+				const isGarageDoor = output.garageDoor
 				const serviceType = isGarageDoor ? this.hap.Service.GarageDoorOpener : this.hap.Service.Outlet
 				const service = this.findRestored(serviceType.UUID, output.id)
 					|| this.accessory.addService(serviceType, output.label, output.id.toString())
@@ -66,7 +66,7 @@ export class NessOutputsHelper {
 						.on('set', this.setOn.bind(this, output.id, service))
 				}
 				this.addConfigured(service)
-				this.log.info("Configured: Output: " + output.id + ": " + output.label + " type: " + output.type)
+				this.log.info("Configured: Output: " + output.id + ": " + output.label + " garageDoor: " + output.garageDoor)
 			}
 		}
 		// remove any restored services not configured
