@@ -1,7 +1,7 @@
 {
-  "name": "homebridge-ness-d16x",
-  "description": "Homebridge plugin for Ness D8x / D16x",
-  "version": "1.0.2",
+  "name": "homebridge-ness-d16x-cg",
+  "description": "Homebridge plugin for Ness D8x / D16x (CG fork)",
+  "version": "1.0.3",
   "license": "MIT",
   "engines": {
     "node": ">=18.16.0",
@@ -23,10 +23,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anekol/homebridge-ness-d16x.git"
+    "url": "git+https://github.com/christopherguzik/homebridge-ness-d16x.git"
   },
   "bugs": {
-    "url": "https://github.com/anekol/homebridge-ness-d16x/issues"
+    "url": "https://github.com/christopherguzik/homebridge-ness-d16x/issues"
   },
   "dependencies": {
     "nessclient": "2.2.0"
