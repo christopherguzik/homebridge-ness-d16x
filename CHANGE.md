@@ -2,6 +2,7 @@
 ## Change Log
 | Version | Changes                                                                                                    |
 | ------- | ---------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | * split the fork into a standalone plugin identity using platform alias NessD16xCG                        |
 | 1.0.7   | * change outputs row to a Type selector for better Homebridge UI compatibility                            |
 | 1.0.6   | * include build tools in dependencies so GitHub branch installs can run prepare/build reliably            |
 | 1.0.5   | * restore platform alias to NessD16x so existing Homebridge config maps correctly                          |
