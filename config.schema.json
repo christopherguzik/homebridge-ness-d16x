@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "NessD16xCG",
+  "pluginAlias": "NessD16x",
   "pluginType": "platform",
   "headerDisplay": "Homebridge plugin for Ness D8x/D16x Security Panel (CG fork)",
   "singular": true,
