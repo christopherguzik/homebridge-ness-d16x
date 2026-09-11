@@ -52,9 +52,10 @@ export class NessOutputsHelper {
 			if (1 <= output.id && output.id <= NOUTPUTS) {
 				const isGarageDoor = output.garageDoor
 				const serviceType = isGarageDoor ? this.hap.Service.GarageDoorOpener : this.hap.Service.Outlet
+				const displayLabel = isGarageDoor ? output.label + ' (Garage)' : output.label
 				const service = this.findRestored(serviceType.UUID, output.id)
-					|| this.accessory.addService(serviceType, output.label, output.id.toString())
-				service.displayName = output.label
+					|| this.accessory.addService(serviceType, displayLabel, output.id.toString())
+				service.displayName = displayLabel
 				if (isGarageDoor) {
 					service.getCharacteristic(this.hap.Characteristic.TargetDoorState)
 						.on('set', this.setGarageTargetDoorState.bind(this, output.id, service))
@@ -66,7 +67,7 @@ export class NessOutputsHelper {
 						.on('set', this.setOn.bind(this, output.id, service))
 				}
 				this.addConfigured(service)
-				this.log.info("Configured: Output: " + output.id + ": " + output.label + " garageDoor: " + output.garageDoor)
+				this.log.info("Configured: Output: " + output.id + ": " + displayLabel + " garageDoor: " + output.garageDoor)
 			}
 		}
 		// remove any restored services not configured
