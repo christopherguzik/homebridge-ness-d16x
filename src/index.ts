@@ -19,7 +19,7 @@ import { NessClient } from 'nessclient'
 import { NessPanelHelper } from './panel'
 
 export const PLATFORM_NAME = 'NessD16x'
-export const PLUGIN_NAME = 'homebridge-ness-d16x' // Plugin name from package.json
+export const PLUGIN_NAME = 'homebridge-ness-d16x-cg' // Plugin name from package.json
 export enum ArmingMode {
   AWAY = 'AWAY',
   HOME = 'HOME',
@@ -32,7 +32,7 @@ export enum SensorType {
   MOTION = 'MOTION',
   SMOKE = 'SMOKE'
 }
-export type OutputConfig = { id: number, label: string }
+export type OutputConfig = { id: number, label: string, garageDoor: boolean }
 export type ZoneConfig = { id: number, label: string, type: SensorType }
 
 module.exports = (api: API) => {
@@ -70,8 +70,16 @@ export class NessD16x implements DynamicPlatformPlugin {
     this.nessClient = new NessClient(this.host, +this.port)
 
     // map config strings to enums
-    this.outputs = ((config.outputs || []) as { id: string, label: string }[])
-      .map((a) => { return { id: parseInt(a.id), label: a.label } })
+    this.outputs = ((config.outputs || []) as { id: string, label: string, type?: string, garageDoor?: boolean }[])
+      .map((a) => {
+        const outputType = (a.type || 'outlet').toUpperCase()
+        const isGarageDoor = a.garageDoor === true || outputType === 'GARAGEDOOR' || outputType === 'GARAGE_DOOR'
+        return {
+          id: parseInt(a.id),
+          label: a.label,
+          garageDoor: isGarageDoor
+        }
+      })
     this.excludeModes = ((config.excludeModes || []) as string[])
       .map((m) => m.toUpperCase() as ArmingMode)
     this.zones = ((config.zones || []) as { id: string, type: string, label: string }[])
