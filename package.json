@@ -1,7 +1,7 @@
 {
   "name": "homebridge-ness-d16x-cg",
   "description": "Homebridge Ness D16x CG garage-door fork",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "engines": {
     "node": ">=18.16.0",

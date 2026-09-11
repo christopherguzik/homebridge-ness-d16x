@@ -68,6 +68,12 @@
             "label": {
               "type": "string"
             },
+            "zoneId": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 16,
+              "description": "Optional zone to use as the garage door open/closed sensor"
+            },
             "type": {
               "type": "string",
               "default": "outlet",
@@ -181,6 +187,11 @@
                 "flex": "4 4 200px",
                 "notitle": true,
                 "placeholder": "Label"
+              },
+              {
+                "key": "outputs[].zoneId",
+                "flex": "1 1 70px",
+                "title": "Zone"
               },
               {
                 "key": "outputs[].type",

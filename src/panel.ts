@@ -453,6 +453,7 @@ export class NessPanelHelper {
 
   // handle NessClient zone change
   private zoneChanged(state: [zone: number, change: boolean]) {
+    if (this.outputsHelper) this.outputsHelper.updateZone(state[0], state[1])
     const helper = this.zoneHelpers[state[0] - 1]
     if (helper) helper.zoneChanged(state[1])
   }
