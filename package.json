@@ -1,7 +1,7 @@
 {
   "name": "homebridge-ness-d16x-cg",
   "description": "Homebridge plugin for Ness D8x / D16x (CG fork)",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "license": "MIT",
   "engines": {
     "node": ">=18.16.0",
@@ -30,7 +30,9 @@
     "url": "https://github.com/christopherguzik/homebridge-ness-d16x/issues"
   },
   "dependencies": {
-    "nessclient": "2.2.0"
+    "nessclient": "2.2.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.6.4"
   },
   "devDependencies": {
     "@types/node": "^18.16.0",
@@ -38,8 +40,6 @@
     "@typescript-eslint/parser": "^5.23.0",
     "eslint": "^8.15.0",
     "homebridge": "^1.3.9",
-    "rimraf": "^3.0.2",
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.4"
+    "ts-node": "^10.7.0"
   }
 }
