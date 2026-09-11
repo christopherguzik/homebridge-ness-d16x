@@ -1,7 +1,7 @@
 {
   "name": "homebridge-ness-d16x-cg",
   "description": "Homebridge plugin for Ness D8x / D16x (CG fork)",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "engines": {
     "node": ">=18.16.0",
@@ -10,8 +10,9 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint src/**.ts --max-warnings=0",
-    "prepare": "npm run lint && rimraf ./dist && tsc",
-    "prepublishOnly": "npm run prepare"
+    "build": "rimraf ./dist && tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint && npm run build"
   },
   "keywords": [
     "homebridge-plugin",

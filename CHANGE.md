@@ -2,6 +2,7 @@
 ## Change Log
 | Version | Changes                                                                                                    |
 | ------- | ---------------------------------------------------------------------------------------------------------- |
+| 1.0.4   | * make GitHub branch installs more compatible by removing lint from prepare script                         |
 | 1.0.3   | * rename package to homebridge-ness-d16x-cg</br>* rename platform alias to NessD16xCG for side-by-side install clarity |
 | 1.0.2   | * append " (Garage)" to labels of outputs configured as Garage Door for easier HomeKit differentiation |
 | 1.0.1   | * add per-output Garage Door checkbox in config UI</br>* map selected outputs to HomeKit Garage Door service |
