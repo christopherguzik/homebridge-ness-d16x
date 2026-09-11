@@ -1,7 +1,7 @@
 {
-  "pluginAlias": "NessD16xCG",
+  "pluginAlias": "NessD16v2",
   "pluginType": "platform",
-  "headerDisplay": "Homebridge Ness D16x CG Garage Fork",
+  "headerDisplay": "Homebridge Ness D16 v2",
   "singular": true,
   "schema": {
     "type": "object",

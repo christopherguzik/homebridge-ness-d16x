@@ -2,6 +2,7 @@
 ## Change Log
 | Version | Changes                                                                                                    |
 | ------- | ---------------------------------------------------------------------------------------------------------- |
+| 2.0.0   | * rename plugin to homebridge-ness-d16v2 and platform alias to NessD16v2 for npm publication             |
 | 1.1.1   | * allow garage door outputs to follow a configured zone for open and closed state                         |
 | 1.1.0   | * split the fork into a standalone plugin identity using platform alias NessD16xCG                        |
 | 1.0.7   | * change outputs row to a Type selector for better Homebridge UI compatibility                            |
