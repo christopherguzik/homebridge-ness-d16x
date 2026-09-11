@@ -1,7 +1,7 @@
 {
   "name": "homebridge-ness-d16x-cg",
   "description": "Homebridge plugin for Ness D8x / D16x (CG fork)",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "license": "MIT",
   "engines": {
     "node": ">=18.16.0",

@@ -2,6 +2,7 @@
 ## Change Log
 | Version | Changes                                                                                                    |
 | ------- | ---------------------------------------------------------------------------------------------------------- |
+| 1.0.7   | * change outputs row to a Type selector for better Homebridge UI compatibility                            |
 | 1.0.6   | * include build tools in dependencies so GitHub branch installs can run prepare/build reliably            |
 | 1.0.5   | * restore platform alias to NessD16x so existing Homebridge config maps correctly                          |
 | 1.0.4   | * make GitHub branch installs more compatible by removing lint from prepare script                         |
