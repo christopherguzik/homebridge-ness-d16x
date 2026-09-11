@@ -67,6 +67,24 @@
             },
             "label": {
               "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "default": "outlet",
+              "oneOf": [
+                {
+                  "title": "Outlet",
+                  "enum": [
+                    "outlet"
+                  ]
+                },
+                {
+                  "title": "Garage Door",
+                  "enum": [
+                    "garageDoor"
+                  ]
+                }
+              ]
             }
           }
         }
@@ -163,6 +181,11 @@
                 "flex": "4 4 200px",
                 "notitle": true,
                 "placeholder": "Label"
+              },
+              {
+                "key": "outputs[].type",
+                "flex": "2 2 120px",
+                "notitle": true
               }
             ]
           }

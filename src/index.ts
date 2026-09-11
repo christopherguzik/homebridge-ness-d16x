@@ -32,7 +32,11 @@ export enum SensorType {
   MOTION = 'MOTION',
   SMOKE = 'SMOKE'
 }
-export type OutputConfig = { id: number, label: string }
+export enum OutputAccessoryType {
+  OUTLET = 'OUTLET',
+  GARAGE_DOOR = 'GARAGE_DOOR'
+}
+export type OutputConfig = { id: number, label: string, type: OutputAccessoryType }
 export type ZoneConfig = { id: number, label: string, type: SensorType }
 
 module.exports = (api: API) => {
@@ -70,8 +74,17 @@ export class NessD16x implements DynamicPlatformPlugin {
     this.nessClient = new NessClient(this.host, +this.port)
 
     // map config strings to enums
-    this.outputs = ((config.outputs || []) as { id: string, label: string }[])
-      .map((a) => { return { id: parseInt(a.id), label: a.label } })
+    this.outputs = ((config.outputs || []) as { id: string, label: string, type?: string }[])
+      .map((a) => {
+        const outputType = (a.type || 'outlet').toUpperCase()
+        return {
+          id: parseInt(a.id),
+          label: a.label,
+          type: outputType === 'GARAGEDOOR' || outputType === 'GARAGE_DOOR'
+            ? OutputAccessoryType.GARAGE_DOOR
+            : OutputAccessoryType.OUTLET
+        }
+      })
     this.excludeModes = ((config.excludeModes || []) as string[])
       .map((m) => m.toUpperCase() as ArmingMode)
     this.zones = ((config.zones || []) as { id: string, type: string, label: string }[])
