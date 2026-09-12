@@ -7,9 +7,11 @@ A Homebridge plugin to support the Ness D8x / D16x Security Panel, garage-door o
 ## Highlights
 
 - [x] Security panel arming and disarming in HomeKit
-- [x] Output control as HomeKit outlets
-- [x] Per-output garage door checkbox in the Homebridge config UI
-- [x] Optional zone-backed garage door open/closed state
+- [x] Control all eight AUX outputs as HomeKit outlets
+- [x] Configure outputs as garage doors with state, toggle, or separate open/close relay control
+- [x] Optional zone-backed garage door open/closed state, with a configurable travel-time fallback
+- [x] Contact, motion, smoke, occupancy, leak, and carbon monoxide zone sensors
+- [x] Panel fault, tamper, and battery-low status in HomeKit
 
 * Mode mapping
   
@@ -45,11 +47,21 @@ Use the Homebridge UI homebridge-config-ui-x UI Plugins/Config or from the shell
 $ npm install homebridge-ness-d16x-cg --save
 ```
 
+## Garage Door Outputs
+
+Set an output's **Type** to **Garage Door** in the Homebridge config UI. Choose the control method that matches the panel output wiring:
+
+- **Open / close state** uses the configured output's on and off commands.
+- **Toggle relay** sends the same momentary trigger for both open and close.
+- **Separate open / close relays** uses the configured output to open and **Close AUX** to close.
+
+Configure a feedback **Zone** whenever possible. Without it, the plugin uses **Travel secs** to update the door state after a command.
+
 ## Support and Issues
 
-* For support please use the [Discussions](https://github.com/anekol/homebridge-ness-d16x/discussions) tab.
+* For support please use the [Discussions](https://github.com/christopherguzik/homebridge-ness-d16x/discussions) tab.
 
-* Please use the Issues [Issues](https://github.com/anekol/homebridge-ness-d16x/issues) tracker only for:
+* Please use the [Issues](https://github.com/christopherguzik/homebridge-ness-d16x/issues) tracker for:
   + Proposing/discussing development/enhancement issues
   + Submitting pull requests
   + Bug reports - where a bug is either a _demonstrable problem_ that is caused by the code in the repository, 

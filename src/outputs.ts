@@ -4,7 +4,7 @@ import { CharacteristicSetCallback, CharacteristicValue, HAP, Logger, PlatformAc
 import { NessClient } from "nessclient";
 import { AuxiliaryOutputsUpdate, OutputsUpdate } from 'nessclient/build/event'
 import { AuxiliaryOutputType, OutputType } from 'nessclient/build/event-types'
-import { NessD16x, OutputConfig } from './index'
+import { GarageDoorMode, NessD16x, OutputConfig } from './index'
 
 const NO_ERRORS = null
 const NAUXOUTPUTS = 8
@@ -18,6 +18,7 @@ export class NessOutputsHelper {
 	private readonly outputConfigs = new Map<number, OutputConfig>()
 	private readonly restored: Service[] = []
 	private status: boolean[] = []
+	private readonly garageTransitionTimers = new Map<number, NodeJS.Timeout>()
 
 	// constructor
 	constructor(
@@ -50,7 +51,7 @@ export class NessOutputsHelper {
 
 		// configure output services
 		for (const output of this.outputs) {
-			if (1 <= output.id && output.id <= NOUTPUTS) {
+			if (1 <= output.id && output.id <= MAXOUTPUTS) {
 				this.outputConfigs.set(output.id, output)
 				const isGarageDoor = output.garageDoor
 				const serviceType = isGarageDoor ? this.hap.Service.GarageDoorOpener : this.hap.Service.Outlet
@@ -69,7 +70,7 @@ export class NessOutputsHelper {
 						.on('set', this.setOn.bind(this, output.id, service))
 				}
 				this.addConfigured(service)
-				this.log.info("Configured: Output: " + output.id + ": " + displayLabel + " garageDoor: " + output.garageDoor + " zoneId: " + output.zoneId)
+				this.log.info("Configured: Output: " + output.id + ": " + displayLabel + " garageDoor: " + output.garageDoor + " mode: " + output.garageDoorMode + " zoneId: " + output.zoneId)
 			}
 		}
 		// remove any restored services not configured
@@ -116,6 +117,7 @@ export class NessOutputsHelper {
 			if (service) {
 				if (service.UUID === this.hap.Service.GarageDoorOpener.UUID) {
 					if (output?.zoneId) return
+					if (output?.garageDoorMode !== GarageDoorMode.STATE) return
 					const currentState = state
 						? this.hap.Characteristic.CurrentDoorState.OPEN
 						: this.hap.Characteristic.CurrentDoorState.CLOSED
@@ -138,6 +140,7 @@ export class NessOutputsHelper {
 			if (!output.garageDoor || output.zoneId !== zoneId) continue
 			const service = this.findConfigured(output.id)
 			if (!service || service.UUID !== this.hap.Service.GarageDoorOpener.UUID) continue
+			this.clearGarageTransitionTimer(output.id)
 			const currentState = state
 				? this.hap.Characteristic.CurrentDoorState.OPEN
 				: this.hap.Characteristic.CurrentDoorState.CLOSED
@@ -184,13 +187,48 @@ export class NessOutputsHelper {
 		if (this.verboseLog)
 			this.log.info('Set Garage TargetDoorState: ' + service.subtype + ": value: " + value)
 		const open = value === this.hap.Characteristic.TargetDoorState.OPEN
-		this.nessClient.aux(id, open)
+		const output = this.outputConfigs.get(id)
+		if (!output) {
+			callback(new Error('Garage output configuration not found: ' + id))
+			return
+		}
+		if (output.garageDoorMode === GarageDoorMode.TOGGLE) {
+			this.nessClient.aux(id)
+		} else if (output.garageDoorMode === GarageDoorMode.SEPARATE) {
+			const commandOutputId = open ? id : output.closeOutputId
+			if (!commandOutputId) {
+				callback(new Error('A close output is required for separate garage door control'))
+				return
+			}
+			this.nessClient.aux(commandOutputId)
+		} else {
+			this.nessClient.aux(id, open)
+		}
 		service.updateCharacteristic(this.hap.Characteristic.TargetDoorState, value)
 		service.updateCharacteristic(
 			this.hap.Characteristic.CurrentDoorState,
 			open ? this.hap.Characteristic.CurrentDoorState.OPENING : this.hap.Characteristic.CurrentDoorState.CLOSING,
 		)
+		if (!output.zoneId) this.scheduleGarageTransition(id, service, open, output.transitionSeconds)
 		callback(NO_ERRORS)
+	}
+
+	private scheduleGarageTransition(id: number, service: Service, open: boolean, transitionSeconds: number): void {
+		this.clearGarageTransitionTimer(id)
+		const timer = setTimeout(() => {
+			service.updateCharacteristic(
+				this.hap.Characteristic.CurrentDoorState,
+				open ? this.hap.Characteristic.CurrentDoorState.OPEN : this.hap.Characteristic.CurrentDoorState.CLOSED,
+			)
+			this.garageTransitionTimers.delete(id)
+		}, transitionSeconds * 1000)
+		this.garageTransitionTimers.set(id, timer)
+	}
+
+	private clearGarageTransitionTimer(id: number): void {
+		const timer = this.garageTransitionTimers.get(id)
+		if (timer) clearTimeout(timer)
+		this.garageTransitionTimers.delete(id)
 	}
 
 	// add service to configured list

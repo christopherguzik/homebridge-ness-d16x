@@ -88,8 +88,12 @@ export class NessPanelHelper {
       this.log.info("Valid arming states: " + this.validArmingStates(this.excludeModes))
 
     // configure battery service
-    this.accessory.getService(this.hap.Service.Battery) ||
+    const battery = this.accessory.getService(this.hap.Service.Battery) ||
       this.accessory.addService(this.hap.Service.Battery)
+    battery
+      .setCharacteristic(this.hap.Characteristic.BatteryLevel, 100)
+      .setCharacteristic(this.hap.Characteristic.ChargingState, this.hap.Characteristic.ChargingState.NOT_CHARGING)
+      .setCharacteristic(this.hap.Characteristic.StatusLowBattery, this.hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL)
 
     // configure outputs accessory
     if (0 < this.outputs.length) {
@@ -421,6 +425,7 @@ export class NessPanelHelper {
       else if (this.verboseLog)
         this.log.info("Battery Status: Normal")
       battery.updateCharacteristic(this.hap.Characteristic.StatusLowBattery, state)
+      battery.updateCharacteristic(this.hap.Characteristic.BatteryLevel, lowBattery ? 20 : 100)
     }
   }
 

@@ -1,7 +1,7 @@
 {
   "name": "homebridge-ness-d16x-cg",
   "description": "Homebridge Ness D16 v2 with garage-door output support",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "license": "MIT",
   "engines": {
     "node": ">=18.16.0",

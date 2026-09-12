@@ -91,6 +91,29 @@
                   ]
                 }
               ]
+            },
+            "garageDoorMode": {
+              "type": "string",
+              "default": "state",
+              "description": "Garage Door only: state uses open/close commands, toggle sends one trigger command, separate uses different open and close outputs",
+              "oneOf": [
+                { "title": "Open / close state", "enum": [ "state" ] },
+                { "title": "Toggle relay", "enum": [ "toggle" ] },
+                { "title": "Separate open / close relays", "enum": [ "separate" ] }
+              ]
+            },
+            "closeOutputId": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 8,
+              "description": "Garage Door only: output to trigger when closing in Separate open / close relays mode"
+            },
+            "transitionSeconds": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 300,
+              "default": 15,
+              "description": "Garage Door only: estimated travel time when no feedback zone is configured"
             }
           }
         }
@@ -135,6 +158,24 @@
                   "title": "Smoke",
                   "enum": [
                     "smoke"
+                  ]
+                },
+                {
+                  "title": "Occupancy",
+                  "enum": [
+                    "occupancy"
+                  ]
+                },
+                {
+                  "title": "Leak",
+                  "enum": [
+                    "leak"
+                  ]
+                },
+                {
+                  "title": "Carbon Monoxide",
+                  "enum": [
+                    "carbon_monoxide"
                   ]
                 }
               ]
@@ -197,6 +238,21 @@
                 "key": "outputs[].type",
                 "flex": "2 2 120px",
                 "title": "Type"
+              },
+              {
+                "key": "outputs[].garageDoorMode",
+                "flex": "2 2 150px",
+                "title": "Garage control"
+              },
+              {
+                "key": "outputs[].closeOutputId",
+                "flex": "1 1 70px",
+                "title": "Close AUX"
+              },
+              {
+                "key": "outputs[].transitionSeconds",
+                "flex": "1 1 80px",
+                "title": "Travel secs"
               }
             ]
           }
