@@ -18,8 +18,8 @@ import { API, APIEvent, DynamicPlatformPlugin, HAP, Logger, PlatformAccessory, P
 import { NessClient } from 'nessclient'
 import { NessPanelHelper } from './panel'
 
-export const PLATFORM_NAME = 'NessD16v2'
-export const PLUGIN_NAME = 'homebridge-ness-d16v2' // Plugin name from package.json
+export const PLATFORM_NAME = 'NessD16xCG'
+export const PLUGIN_NAME = 'homebridge-ness-d16x-cg' // Plugin name from package.json
 export enum ArmingMode {
   AWAY = 'AWAY',
   HOME = 'HOME',

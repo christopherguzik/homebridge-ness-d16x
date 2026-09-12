@@ -1,8 +1,15 @@
-# homebridge-ness-d16v2
+# homebridge-ness-d16x-cg
 
-[![npm](https://img.shields.io/npm/v/homebridge-ness-d16v2)](https://www.npmjs.com/package/homebridge-ness-d16v2)
+[![npm](https://img.shields.io/npm/v/homebridge-ness-d16x-cg)](https://www.npmjs.com/package/homebridge-ness-d16x-cg)
 
 A Homebridge plugin to support the Ness D8x / D16x Security Panel, garage-door outputs, and zone-backed door state.
+
+## Highlights
+
+- [x] Security panel arming and disarming in HomeKit
+- [x] Output control as HomeKit outlets
+- [x] Per-output garage door checkbox in the Homebridge config UI
+- [x] Optional zone-backed garage door open/closed state
 
 * Mode mapping
   
@@ -35,7 +42,7 @@ Requires an interface that supports [Ness D8x / D16x Serial Interface ASCII prot
 Use the Homebridge UI homebridge-config-ui-x UI Plugins/Config or from the shell.
 
 ```sh
-$ npm install homebridge-ness-d16v2 --save
+$ npm install homebridge-ness-d16x-cg --save
 ```
 
 ## Support and Issues

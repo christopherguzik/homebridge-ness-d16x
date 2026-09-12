@@ -1,7 +1,7 @@
 {
-  "pluginAlias": "NessD16v2",
+  "pluginAlias": "NessD16xCG",
   "pluginType": "platform",
-  "headerDisplay": "Homebridge Ness D16 v2",
+  "headerDisplay": "Homebridge Ness D16x CG",
   "singular": true,
   "schema": {
     "type": "object",
