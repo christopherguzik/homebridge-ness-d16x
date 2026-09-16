@@ -215,44 +215,65 @@
           "items": {
             "type": "div",
             "displayFlex": true,
-            "flex-direction": "row",
+            "flex-direction": "column",
             "items": [
               {
-                "key": "outputs[].id",
-                "flex": "1 1 50px",
-                "notitle": true,
-                "placeholder": "Aux"
+                "type": "div",
+                "displayFlex": true,
+                "flex-flow": "row wrap",
+                "items": [
+                  {
+                    "key": "outputs[].id",
+                    "flex": "1 1 70px",
+                    "notitle": true,
+                    "placeholder": "Aux"
+                  },
+                  {
+                    "key": "outputs[].label",
+                    "flex": "4 4 240px",
+                    "notitle": true,
+                    "placeholder": "Label"
+                  },
+                  {
+                    "key": "outputs[].type",
+                    "flex": "2 2 160px",
+                    "title": "Type"
+                  }
+                ]
               },
               {
-                "key": "outputs[].label",
-                "flex": "4 4 200px",
-                "notitle": true,
-                "placeholder": "Label"
+                "type": "div",
+                "displayFlex": true,
+                "flex-flow": "row wrap",
+                "items": [
+                  {
+                    "key": "outputs[].zoneId",
+                    "flex": "1 1 100px",
+                    "title": "Zone sensor"
+                  },
+                  {
+                    "key": "outputs[].garageDoorMode",
+                    "flex": "3 3 260px",
+                    "title": "Garage control"
+                  }
+                ]
               },
               {
-                "key": "outputs[].zoneId",
-                "flex": "1 1 70px",
-                "title": "Zone"
-              },
-              {
-                "key": "outputs[].type",
-                "flex": "2 2 120px",
-                "title": "Type"
-              },
-              {
-                "key": "outputs[].garageDoorMode",
-                "flex": "2 2 150px",
-                "title": "Garage control"
-              },
-              {
-                "key": "outputs[].closeOutputId",
-                "flex": "1 1 70px",
-                "title": "Close AUX"
-              },
-              {
-                "key": "outputs[].transitionSeconds",
-                "flex": "1 1 80px",
-                "title": "Travel secs"
+                "type": "div",
+                "displayFlex": true,
+                "flex-flow": "row wrap",
+                "items": [
+                  {
+                    "key": "outputs[].closeOutputId",
+                    "flex": "1 1 140px",
+                    "title": "Close AUX"
+                  },
+                  {
+                    "key": "outputs[].transitionSeconds",
+                    "flex": "1 1 160px",
+                    "title": "Travel time (seconds)"
+                  }
+                ]
               }
             ]
           }
