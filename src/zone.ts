@@ -54,6 +54,18 @@ export class NessZoneHelper {
         this.service = this.findRestored(this.hap.Service.SmokeSensor.UUID) ||
           this.accessory.addService(this.hap.Service.SmokeSensor)
         break
+      case SensorType.OCCUPANCY:
+        this.service = this.findRestored(this.hap.Service.OccupancySensor.UUID) ||
+          this.accessory.addService(this.hap.Service.OccupancySensor)
+        break
+      case SensorType.LEAK:
+        this.service = this.findRestored(this.hap.Service.LeakSensor.UUID) ||
+          this.accessory.addService(this.hap.Service.LeakSensor)
+        break
+      case SensorType.CARBON_MONOXIDE:
+        this.service = this.findRestored(this.hap.Service.CarbonMonoxideSensor.UUID) ||
+          this.accessory.addService(this.hap.Service.CarbonMonoxideSensor)
+        break
       default:
         this.log.error('Zone sensor type not known: zone: ' + this.zone.id + ' type: ' + this.zone.type)
         break
@@ -89,6 +101,15 @@ export class NessZoneHelper {
           break
         case SensorType.SMOKE:
           this.service.updateCharacteristic(this.hap.Characteristic.SmokeDetected, this.zoneChange)
+          break
+        case SensorType.OCCUPANCY:
+          this.service.updateCharacteristic(this.hap.Characteristic.OccupancyDetected, this.zoneChange)
+          break
+        case SensorType.LEAK:
+          this.service.updateCharacteristic(this.hap.Characteristic.LeakDetected, this.zoneChange)
+          break
+        case SensorType.CARBON_MONOXIDE:
+          this.service.updateCharacteristic(this.hap.Characteristic.CarbonMonoxideDetected, this.zoneChange)
           break
       }
     }

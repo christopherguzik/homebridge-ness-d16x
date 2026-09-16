@@ -1,17 +1,30 @@
 {
-  "name": "homebridge-ness-d16x",
-  "description": "Homebridge plugin for Ness D8x / D16x",
-  "version": "1.0.0",
+  "name": "homebridge-ness-d16x-cg",
+  "description": "Homebridge Ness D16 v2 with garage-door output support",
+  "version": "2.1.0",
   "license": "MIT",
   "engines": {
     "node": ">=18.16.0",
     "homebridge": ">=1.0.0"
   },
   "main": "dist/index.js",
+  "files": [
+    "dist",
+    "config.schema.json",
+    "README.md",
+    "CHANGE.md",
+    "LICENSE",
+    "readme"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "lint": "eslint src/**.ts --max-warnings=0",
-    "prepare": "npm run lint && rimraf ./dist && tsc",
-    "prepublishOnly": "npm run prepare"
+    "build": "rimraf ./dist && tsc",
+    "prepare": "echo \"skip build on git install\"",
+    "prepack": "npm run lint && npm run build",
+    "prepublishOnly": "npm run lint"
   },
   "keywords": [
     "homebridge-plugin",
@@ -23,10 +36,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anekol/homebridge-ness-d16x.git"
+    "url": "git+https://github.com/christopherguzik/homebridge-ness-d16x.git"
   },
   "bugs": {
-    "url": "https://github.com/anekol/homebridge-ness-d16x/issues"
+    "url": "https://github.com/christopherguzik/homebridge-ness-d16x/issues"
   },
   "dependencies": {
     "nessclient": "2.2.0"

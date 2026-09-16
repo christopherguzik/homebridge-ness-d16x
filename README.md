@@ -1,10 +1,17 @@
-# homebridge-ness-d16x
+# homebridge-ness-d16x-cg
 
-[![npm](https://img.shields.io/npm/v/homebridge-ness-d16x)](https://www.npmjs.com/package/homebridge-ness-d16x) 
-[![codecov](https://codecov.io/gh/anekol/homebridge-ness-d16x/branch/main/graph/badge.svg)](https://codecov.io/gh/anekol/homebridge-ness-d16x)
-[![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
+[![npm](https://img.shields.io/npm/v/homebridge-ness-d16x-cg)](https://www.npmjs.com/package/homebridge-ness-d16x-cg)
 
-A Homebridge plugin to support the Ness D8x / D16x Security Panel and zone accessories.
+A Homebridge plugin to support the Ness D8x / D16x Security Panel, garage-door outputs, and zone-backed door state.
+
+## Highlights
+
+- [x] Security panel arming and disarming in HomeKit
+- [x] Control all eight AUX outputs as HomeKit outlets
+- [x] Configure outputs as garage doors with state, toggle, or separate open/close relay control
+- [x] Optional zone-backed garage door open/closed state, with a configurable travel-time fallback
+- [x] Contact, motion, smoke, occupancy, leak, and carbon monoxide zone sensors
+- [x] Panel fault, tamper, and battery-low status in HomeKit
 
 * Mode mapping
   
@@ -17,7 +24,7 @@ A Homebridge plugin to support the Ness D8x / D16x Security Panel and zone acces
 
 * Be aware that if Ness Home/Monitor Mode is not configured on your panel and you don't exclude mode "Home" in your settings, then selecting Away followed by Home will NOT disarm the panel (Off will).
 
-* AUX Outputs are modelled as "Outlets". Turn On/Off, behaviour is determined by panel setup (eg see P141E 4E/P141E 8E for AUX1 enabled/disabled/toggle/latch )
+* AUX Outputs can be modelled as "Outlets" or "Garage Doors". Garage Door outputs can optionally follow a configured zone to reflect open/closed state in HomeKit.
 
 <a href="readme/panel.png"><img src="readme/panel.png" alt="panel" width="100"/></a>
 <a href="readme/outputs.png"><img src="readme/outputs.png" alt="panel" width="100"/></a>
@@ -37,14 +44,24 @@ Requires an interface that supports [Ness D8x / D16x Serial Interface ASCII prot
 Use the Homebridge UI homebridge-config-ui-x UI Plugins/Config or from the shell.
 
 ```sh
-$ npm install homebridge-ness-d16x --save
+$ npm install homebridge-ness-d16x-cg --save
 ```
+
+## Garage Door Outputs
+
+Set an output's **Type** to **Garage Door** in the Homebridge config UI. Choose the control method that matches the panel output wiring:
+
+- **Open / close state** uses the configured output's on and off commands.
+- **Toggle relay** sends the same momentary trigger for both open and close.
+- **Separate open / close relays** uses the configured output to open and **Close AUX** to close.
+
+Configure a feedback **Zone** whenever possible. Without it, the plugin uses **Travel secs** to update the door state after a command.
 
 ## Support and Issues
 
-* For support please use the [Discussions](https://github.com/anekol/homebridge-ness-d16x/discussions) tab.
+* For support please use the [Discussions](https://github.com/christopherguzik/homebridge-ness-d16x/discussions) tab.
 
-* Please use the Issues [Issues](https://github.com/anekol/homebridge-ness-d16x/issues) tracker only for:
+* Please use the [Issues](https://github.com/christopherguzik/homebridge-ness-d16x/issues) tracker for:
   + Proposing/discussing development/enhancement issues
   + Submitting pull requests
   + Bug reports - where a bug is either a _demonstrable problem_ that is caused by the code in the repository, 

@@ -1,7 +1,7 @@
 {
-  "pluginAlias": "NessD16x",
+  "pluginAlias": "NessD16xCG",
   "pluginType": "platform",
-  "headerDisplay": "Homebridge plugin for Ness D8x/D16x Security Panel",
+  "headerDisplay": "Homebridge Ness D16x CG",
   "singular": true,
   "schema": {
     "type": "object",
@@ -67,6 +67,53 @@
             },
             "label": {
               "type": "string"
+            },
+            "zoneId": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 16,
+              "description": "Optional zone to use as the garage door open/closed sensor"
+            },
+            "type": {
+              "type": "string",
+              "default": "outlet",
+              "oneOf": [
+                {
+                  "title": "Outlet",
+                  "enum": [
+                    "outlet"
+                  ]
+                },
+                {
+                  "title": "Garage Door",
+                  "enum": [
+                    "garageDoor"
+                  ]
+                }
+              ]
+            },
+            "garageDoorMode": {
+              "type": "string",
+              "default": "state",
+              "description": "Garage Door only: state uses open/close commands, toggle sends one trigger command, separate uses different open and close outputs",
+              "oneOf": [
+                { "title": "Open / close state", "enum": [ "state" ] },
+                { "title": "Toggle relay", "enum": [ "toggle" ] },
+                { "title": "Separate open / close relays", "enum": [ "separate" ] }
+              ]
+            },
+            "closeOutputId": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 8,
+              "description": "Garage Door only: output to trigger when closing in Separate open / close relays mode"
+            },
+            "transitionSeconds": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 300,
+              "default": 15,
+              "description": "Garage Door only: estimated travel time when no feedback zone is configured"
             }
           }
         }
@@ -112,6 +159,24 @@
                   "enum": [
                     "smoke"
                   ]
+                },
+                {
+                  "title": "Occupancy",
+                  "enum": [
+                    "occupancy"
+                  ]
+                },
+                {
+                  "title": "Leak",
+                  "enum": [
+                    "leak"
+                  ]
+                },
+                {
+                  "title": "Carbon Monoxide",
+                  "enum": [
+                    "carbon_monoxide"
+                  ]
                 }
               ]
             }
@@ -150,19 +215,65 @@
           "items": {
             "type": "div",
             "displayFlex": true,
-            "flex-direction": "row",
+            "flex-direction": "column",
             "items": [
               {
-                "key": "outputs[].id",
-                "flex": "1 1 50px",
-                "notitle": true,
-                "placeholder": "Aux"
+                "type": "div",
+                "displayFlex": true,
+                "flex-flow": "row wrap",
+                "items": [
+                  {
+                    "key": "outputs[].id",
+                    "flex": "1 1 70px",
+                    "notitle": true,
+                    "placeholder": "Aux"
+                  },
+                  {
+                    "key": "outputs[].label",
+                    "flex": "4 4 240px",
+                    "notitle": true,
+                    "placeholder": "Label"
+                  },
+                  {
+                    "key": "outputs[].type",
+                    "flex": "2 2 160px",
+                    "title": "Type"
+                  }
+                ]
               },
               {
-                "key": "outputs[].label",
-                "flex": "4 4 200px",
-                "notitle": true,
-                "placeholder": "Label"
+                "type": "div",
+                "displayFlex": true,
+                "flex-flow": "row wrap",
+                "items": [
+                  {
+                    "key": "outputs[].zoneId",
+                    "flex": "1 1 100px",
+                    "title": "Zone sensor"
+                  },
+                  {
+                    "key": "outputs[].garageDoorMode",
+                    "flex": "3 3 260px",
+                    "title": "Garage control"
+                  }
+                ]
+              },
+              {
+                "type": "div",
+                "displayFlex": true,
+                "flex-flow": "row wrap",
+                "items": [
+                  {
+                    "key": "outputs[].closeOutputId",
+                    "flex": "1 1 140px",
+                    "title": "Close AUX"
+                  },
+                  {
+                    "key": "outputs[].transitionSeconds",
+                    "flex": "1 1 160px",
+                    "title": "Travel time (seconds)"
+                  }
+                ]
               }
             ]
           }

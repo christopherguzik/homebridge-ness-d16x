@@ -18,8 +18,8 @@ import { API, APIEvent, DynamicPlatformPlugin, HAP, Logger, PlatformAccessory, P
 import { NessClient } from 'nessclient'
 import { NessPanelHelper } from './panel'
 
-export const PLATFORM_NAME = 'NessD16x'
-export const PLUGIN_NAME = 'homebridge-ness-d16x' // Plugin name from package.json
+export const PLATFORM_NAME = 'NessD16xCG'
+export const PLUGIN_NAME = 'homebridge-ness-d16x-cg' // Plugin name from package.json
 export enum ArmingMode {
   AWAY = 'AWAY',
   HOME = 'HOME',
@@ -30,9 +30,25 @@ export enum ArmingMode {
 export enum SensorType {
   CONTACT = 'CONTACT',
   MOTION = 'MOTION',
-  SMOKE = 'SMOKE'
+  SMOKE = 'SMOKE',
+  OCCUPANCY = 'OCCUPANCY',
+  LEAK = 'LEAK',
+  CARBON_MONOXIDE = 'CARBON_MONOXIDE'
 }
-export type OutputConfig = { id: number, label: string }
+export enum GarageDoorMode {
+  STATE = 'STATE',
+  TOGGLE = 'TOGGLE',
+  SEPARATE = 'SEPARATE'
+}
+export type OutputConfig = {
+  id: number,
+  label: string,
+  garageDoor: boolean,
+  garageDoorMode: GarageDoorMode,
+  closeOutputId?: number,
+  transitionSeconds: number,
+  zoneId?: number
+}
 export type ZoneConfig = { id: number, label: string, type: SensorType }
 
 module.exports = (api: API) => {
@@ -70,8 +86,32 @@ export class NessD16x implements DynamicPlatformPlugin {
     this.nessClient = new NessClient(this.host, +this.port)
 
     // map config strings to enums
-    this.outputs = ((config.outputs || []) as { id: string, label: string }[])
-      .map((a) => { return { id: parseInt(a.id), label: a.label } })
+    this.outputs = ((config.outputs || []) as {
+      id: string, label: string, type?: string, garageDoor?: boolean, garageDoorMode?: string,
+      closeOutputId?: string | number, transitionSeconds?: string | number, zoneId?: string | number
+    }[])
+      .map((a) => {
+        const outputType = (a.type || 'outlet').toUpperCase()
+        const isGarageDoor = a.garageDoor === true || outputType === 'GARAGEDOOR' || outputType === 'GARAGE_DOOR'
+        const parsedZoneId = a.zoneId === undefined || a.zoneId === null || a.zoneId === ''
+          ? undefined
+          : parseInt(a.zoneId.toString())
+        const parsedCloseOutputId = a.closeOutputId === undefined || a.closeOutputId === null || a.closeOutputId === ''
+          ? undefined
+          : parseInt(a.closeOutputId.toString())
+        const parsedTransitionSeconds = a.transitionSeconds === undefined || a.transitionSeconds === null || a.transitionSeconds === ''
+          ? 15
+          : parseInt(a.transitionSeconds.toString())
+        return {
+          id: parseInt(a.id),
+          label: a.label,
+          garageDoor: isGarageDoor,
+          garageDoorMode: (a.garageDoorMode || GarageDoorMode.STATE).toUpperCase() as GarageDoorMode,
+          closeOutputId: Number.isNaN(parsedCloseOutputId) ? undefined : parsedCloseOutputId,
+          transitionSeconds: Number.isNaN(parsedTransitionSeconds) || parsedTransitionSeconds < 1 ? 15 : parsedTransitionSeconds,
+          zoneId: Number.isNaN(parsedZoneId) ? undefined : parsedZoneId
+        }
+      })
     this.excludeModes = ((config.excludeModes || []) as string[])
       .map((m) => m.toUpperCase() as ArmingMode)
     this.zones = ((config.zones || []) as { id: string, type: string, label: string }[])
