@@ -2,6 +2,7 @@
 ## Change Log
 | Version | Changes                                                                                                    |
 | ------- | ---------------------------------------------------------------------------------------------------------- |
+| 2.1.4   | * fix Outputs/Zones config UI sections not opening due to malformed array layout keys                     |
 | 2.1.3   | * improve output configuration layout readability in the Homebridge setup UI                               |
 | 2.1.0   | * support all eight AUX outputs</br>* add state, toggle, and separate-relay garage-door control with travel-time fallback</br>* add occupancy, leak, and carbon-monoxide zone services</br>* add complete panel battery state and update npm release documentation |
 | 2.0.0   | * keep published package as homebridge-ness-d16x-cg and platform alias as NessD16xCG</br>* highlight garage door checkbox support and zone-backed door state on the npm front page |

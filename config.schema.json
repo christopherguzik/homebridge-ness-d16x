@@ -211,72 +211,75 @@
       "expandable": true,
       "items": [
         {
+          "key": "outputs",
           "type": "array",
-          "items": {
-            "type": "div",
-            "displayFlex": true,
-            "flex-direction": "column",
-            "items": [
-              {
-                "type": "div",
-                "displayFlex": true,
-                "flex-flow": "row wrap",
-                "items": [
-                  {
-                    "key": "outputs[].id",
-                    "flex": "1 1 70px",
-                    "notitle": true,
-                    "placeholder": "Aux"
-                  },
-                  {
-                    "key": "outputs[].label",
-                    "flex": "4 4 240px",
-                    "notitle": true,
-                    "placeholder": "Label"
-                  },
-                  {
-                    "key": "outputs[].type",
-                    "flex": "2 2 160px",
-                    "title": "Type"
-                  }
-                ]
-              },
-              {
-                "type": "div",
-                "displayFlex": true,
-                "flex-flow": "row wrap",
-                "items": [
-                  {
-                    "key": "outputs[].zoneId",
-                    "flex": "1 1 100px",
-                    "title": "Zone sensor"
-                  },
-                  {
-                    "key": "outputs[].garageDoorMode",
-                    "flex": "3 3 260px",
-                    "title": "Garage control"
-                  }
-                ]
-              },
-              {
-                "type": "div",
-                "displayFlex": true,
-                "flex-flow": "row wrap",
-                "items": [
-                  {
-                    "key": "outputs[].closeOutputId",
-                    "flex": "1 1 140px",
-                    "title": "Close AUX"
-                  },
-                  {
-                    "key": "outputs[].transitionSeconds",
-                    "flex": "1 1 160px",
-                    "title": "Travel time (seconds)"
-                  }
-                ]
-              }
-            ]
-          }
+          "items": [
+            {
+              "type": "div",
+              "displayFlex": true,
+              "flex-direction": "column",
+              "items": [
+                {
+                  "type": "div",
+                  "displayFlex": true,
+                  "flex-flow": "row wrap",
+                  "items": [
+                    {
+                      "key": "outputs[].id",
+                      "flex": "1 1 70px",
+                      "notitle": true,
+                      "placeholder": "Aux"
+                    },
+                    {
+                      "key": "outputs[].label",
+                      "flex": "4 4 240px",
+                      "notitle": true,
+                      "placeholder": "Label"
+                    },
+                    {
+                      "key": "outputs[].type",
+                      "flex": "2 2 160px",
+                      "title": "Type"
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "displayFlex": true,
+                  "flex-flow": "row wrap",
+                  "items": [
+                    {
+                      "key": "outputs[].zoneId",
+                      "flex": "1 1 100px",
+                      "title": "Zone sensor"
+                    },
+                    {
+                      "key": "outputs[].garageDoorMode",
+                      "flex": "3 3 260px",
+                      "title": "Garage control"
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "displayFlex": true,
+                  "flex-flow": "row wrap",
+                  "items": [
+                    {
+                      "key": "outputs[].closeOutputId",
+                      "flex": "1 1 140px",
+                      "title": "Close AUX"
+                    },
+                    {
+                      "key": "outputs[].transitionSeconds",
+                      "flex": "1 1 160px",
+                      "title": "Travel time (seconds)"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -286,31 +289,34 @@
       "expandable": true,
       "items": [
         {
+          "key": "zones",
           "type": "array",
-          "items": {
-            "type": "div",
-            "displayFlex": true,
-            "flex-direction": "row",
-            "items": [
-              {
-                "key": "zones[].id",
-                "flex": "1 1 50px",
-                "notitle": true,
-                "placeholder": "Zone"
-              },
-              {
-                "key": "zones[].label",
-                "flex": "4 4 200px",
-                "notitle": true,
-                "placeholder": "Label"
-              },
-              {
-                "key": "zones[].type",
-                "flex": "1 1 50px",
-                "notitle": true
-              }
-            ]
-          }
+          "items": [
+            {
+              "type": "div",
+              "displayFlex": true,
+              "flex-direction": "row",
+              "items": [
+                {
+                  "key": "zones[].id",
+                  "flex": "1 1 50px",
+                  "notitle": true,
+                  "placeholder": "Zone"
+                },
+                {
+                  "key": "zones[].label",
+                  "flex": "4 4 200px",
+                  "notitle": true,
+                  "placeholder": "Label"
+                },
+                {
+                  "key": "zones[].type",
+                  "flex": "1 1 50px",
+                  "notitle": true
+                }
+              ]
+            }
+          ]
         }
       ]
     }
