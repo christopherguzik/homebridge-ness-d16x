@@ -18,6 +18,7 @@ export class NessOutputsHelper {
 	private readonly outputConfigs = new Map<number, OutputConfig>()
 	private readonly restored: Service[] = []
 	private status: boolean[] = []
+	private readonly zoneStates = new Map<number, boolean>()
 	private readonly garageTransitionTimers = new Map<number, NodeJS.Timeout>()
 
 	// constructor
@@ -136,6 +137,7 @@ export class NessOutputsHelper {
 
 	// update garage door state from a mapped zone
 	public updateZone(zoneId: number, state: boolean): void {
+		this.zoneStates.set(zoneId, state)
 		for (const output of this.outputs) {
 			if (!output.garageDoor || output.zoneId !== zoneId) continue
 			const service = this.findConfigured(output.id)
@@ -209,18 +211,24 @@ export class NessOutputsHelper {
 			this.hap.Characteristic.CurrentDoorState,
 			open ? this.hap.Characteristic.CurrentDoorState.OPENING : this.hap.Characteristic.CurrentDoorState.CLOSING,
 		)
-		if (!output.zoneId) this.scheduleGarageTransition(id, service, open, output.transitionSeconds)
+		this.scheduleGarageTransition(id, service, open, output.transitionSeconds, output.zoneId)
 		callback(NO_ERRORS)
 	}
 
-	private scheduleGarageTransition(id: number, service: Service, open: boolean, transitionSeconds: number): void {
+	private scheduleGarageTransition(id: number, service: Service, open: boolean, transitionSeconds: number, zoneId?: number): void {
 		this.clearGarageTransitionTimer(id)
 		const timer = setTimeout(() => {
+			this.garageTransitionTimers.delete(id)
+			// zone-mapped doors: if no zone change arrived, fall back to the last known zone state
+			const finalOpen = zoneId ? (this.zoneStates.get(zoneId) ?? false) : open
 			service.updateCharacteristic(
 				this.hap.Characteristic.CurrentDoorState,
-				open ? this.hap.Characteristic.CurrentDoorState.OPEN : this.hap.Characteristic.CurrentDoorState.CLOSED,
+				finalOpen ? this.hap.Characteristic.CurrentDoorState.OPEN : this.hap.Characteristic.CurrentDoorState.CLOSED,
 			)
-			this.garageTransitionTimers.delete(id)
+			if (zoneId) service.updateCharacteristic(
+				this.hap.Characteristic.TargetDoorState,
+				finalOpen ? this.hap.Characteristic.TargetDoorState.OPEN : this.hap.Characteristic.TargetDoorState.CLOSED,
+			)
 		}, transitionSeconds * 1000)
 		this.garageTransitionTimers.set(id, timer)
 	}
