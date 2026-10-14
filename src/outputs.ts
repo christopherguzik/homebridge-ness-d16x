@@ -194,17 +194,23 @@ export class NessOutputsHelper {
 			callback(new Error('Garage output configuration not found: ' + id))
 			return
 		}
-		if (output.garageDoorMode === GarageDoorMode.TOGGLE) {
-			this.nessClient.aux(id)
-		} else if (output.garageDoorMode === GarageDoorMode.SEPARATE) {
-			const commandOutputId = open ? id : output.closeOutputId
-			if (!commandOutputId) {
-				callback(new Error('A close output is required for separate garage door control'))
-				return
+		try {
+			if (output.garageDoorMode === GarageDoorMode.TOGGLE) {
+				this.nessClient.aux(id)
+			} else if (output.garageDoorMode === GarageDoorMode.SEPARATE) {
+				const commandOutputId = open ? id : output.closeOutputId
+				if (!commandOutputId) {
+					callback(new Error('A close output is required for separate garage door control'))
+					return
+				}
+				this.nessClient.aux(commandOutputId)
+			} else {
+				this.nessClient.aux(id, open)
 			}
-			this.nessClient.aux(commandOutputId)
-		} else {
-			this.nessClient.aux(id, open)
+		} catch (e) {
+			this.log.error('Garage command failed: output: ' + id + ': ' + e)
+			callback(e instanceof Error ? e : new Error(String(e)))
+			return
 		}
 		service.updateCharacteristic(this.hap.Characteristic.TargetDoorState, value)
 		service.updateCharacteristic(
@@ -220,7 +226,7 @@ export class NessOutputsHelper {
 		const timer = setTimeout(() => {
 			this.garageTransitionTimers.delete(id)
 			// zone-mapped doors: if no zone change arrived, fall back to the last known zone state
-			const finalOpen = zoneId ? (this.zoneStates.get(zoneId) ?? false) : open
+			const finalOpen = zoneId ? (this.zoneStates.get(zoneId) ?? open) : open
 			service.updateCharacteristic(
 				this.hap.Characteristic.CurrentDoorState,
 				finalOpen ? this.hap.Characteristic.CurrentDoorState.OPEN : this.hap.Characteristic.CurrentDoorState.CLOSED,
